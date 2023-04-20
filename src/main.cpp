@@ -1,20 +1,21 @@
-#include <Arduino.h>
+#include <Wire.h>
+#include <AHT10.h>
 
-#define SOIL_MOISTURE_PIN 26
+AHT10 aht;
 
 void setup() {
-
   Serial.begin(9600);
-  pinMode(SOIL_MOISTURE_PIN, INPUT);
-
+  Wire.begin();
+  aht.begin();
 }
 
 void loop() {
-
-  int soil_moisture = analogRead(SOIL_MOISTURE_PIN);
-
-  Serial.print("Soil Moisture: ");
-  Serial.println(soil_moisture);
-
-  delay(500);
+  float temperature = aht.readTemperature();
+  float humidity = aht.readHumidity();
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.print(" °C, Humidity: ");
+  Serial.print(humidity);
+  Serial.println("%");
+  delay(1000);
 }
