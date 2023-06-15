@@ -1,21 +1,25 @@
-#include <Wire.h>
-#include <AHT10.h>
+#include <Arduino.h>
+#define RELAY_PIN 23
+#define SENSOR_PIN 34
 
-AHT10 aht;
+int humidity = 0;   
 
 void setup() {
-  Serial.begin(9600);
-  Wire.begin();
-  aht.begin();
+  pinMode(RELAY_PIN, OUTPUT);
+  pinMode(SENSOR_PIN, INPUT);
+  Serial.begin(9600); 
+  
 }
 
 void loop() {
-  float temperature = aht.readTemperature();
-  float humidity = aht.readHumidity();
-  Serial.print("Temperature: ");
-  Serial.print(temperature);
-  Serial.print(" °C, Humidity: ");
-  Serial.print(humidity);
-  Serial.println("%");
+  humidity = analogRead(SENSOR_PIN);
+
+  if (humidity < 1750){
+    digitalWrite(RELAY_PIN, 1);
+  }else{
+    digitalWrite(RELAY_PIN, 0);
+  }
+  Serial.println(humidity);
   delay(1000);
+
 }
